@@ -7,6 +7,7 @@ const LocalStrategy = require("passport-local").Strategy;
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const bcrypt = require("bcryptjs");
+console.log(process.env);
 
 const mongoDB = process.env.mongoDB;
 mongoose.connect(mongoDB, { useUnifiedTopology: true, useNewUrlParser: true });
