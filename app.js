@@ -8,11 +8,8 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const bcrypt = require("bcryptjs");
 console.log(process.env);
+require('./mongoConfig');
 
-const mongoDB = process.env.mongoDB;
-mongoose.connect(mongoDB, { useUnifiedTopology: true, useNewUrlParser: true });
-const db = mongoose.connection;
-db.on("error", console.error.bind(console, "mongo connection error"));
 
 const User = mongoose.model(
     'User',

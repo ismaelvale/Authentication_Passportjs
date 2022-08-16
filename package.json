@@ -4,7 +4,7 @@
   "description": "pp",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "author": "",
   "license": "ISC",
@@ -14,6 +14,8 @@
     "ejs": "^3.1.8",
     "express": "^4.18.1",
     "express-session": "^1.17.3",
+    "jest": "^28.1.3",
+    "mongodb-memory-server": "^8.8.0",
     "mongoose": "^6.5.1",
     "nodemon": "^2.0.19",
     "passport": "^0.6.0",
