@@ -10,6 +10,16 @@
   <% if (user) {%>
     <h1>WELCOME BACK <%= user.username %></h1>
     <a href="/log-out">LOG OUT</a>
+    <div>
+      <h2>Add to the conversation!</h2>
+      <form action="/new" method="POST">
+        <input type="text" name="caption" placeholder="Thoughts?">
+        <input type="file" name="image" accept="image/*" placeholder="Add an image">
+        <input type="text" name="user" value="<%= user.username %>" readonly>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+    <%- include('./messages.ejs')%>
   <% } else { %>
     <h1>please log in</h1>
     <form action="/log-in" method="POST">
@@ -18,6 +28,8 @@
         <label for="password">Password</label>
         <input name="password" type="password" />
         <button>Log In</button>
+        <p>OR</p>
+        <a class="button" href="/sign-up">Sign-Up</a>
     </form>
   <%}%>
 </body>

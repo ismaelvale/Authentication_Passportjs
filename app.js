@@ -19,6 +19,19 @@ const User = mongoose.model(
     })
 );
 
+const messages = [
+    {
+      caption: "Hi there!",
+      user: "Armando",
+      added: new Date()
+    },
+    {
+      caption: "Hello World!",
+      user: "Charles",
+      added: new Date()
+    }
+  ];
+
 const app = express();
 app.set("views", __dirname);
 app.set("view engine", "ejs");
@@ -62,7 +75,7 @@ app.use(function(req, res, next) {
 });
 
 app.get("/", (req, res) => {
-    res.render("index", { user: req.user });
+    res.render("index", { user: req.user, messages: messages });
 });
 app.get("/sign-up", (req, res) => res.render("sign-up-form"));
 app.get('/log-out', (req, res) => {
@@ -95,5 +108,16 @@ app.post("/log-in", passport.authenticate("local", {
     failureRedirect: '/'
 })
 );
+
+app.post('/new', function(req, res, next) {
+    const message = {
+        image: req.body.image,
+        caption: req.body.caption,
+        user: req.body.user,
+        added: new Date().toString()
+    };
+    messages.unshift({image: message.image, caption: message.caption, user: message.user, added: message.added});
+    res.redirect('/');
+  });
 
 app.listen(3000, () => console.log("app listening on port 3000!"));

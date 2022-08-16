@@ -1,0 +1,9 @@
+<div class="feed">
+    <% messages.forEach(function(message) { -%>
+    <div class="post">
+        <p>Posted by <%= message.user %> </p>
+        <img src="<%= message.image %>">
+        <div class="content"> <%= message.caption %> </div>
+        <p> <%= message.added %> </p>
+    </div> <% }) %>
+</div>
