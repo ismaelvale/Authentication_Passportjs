@@ -7,9 +7,34 @@ const LocalStrategy = require("passport-local").Strategy;
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const bcrypt = require("bcryptjs");
-console.log(process.env);
+const multer = require('multer');
+const storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, './uploads');
+
+  },
+  filename: function(req, file, cb) {
+cb(null, Date.now() + file.originalname)
+  }
+});
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+    cb(null, true);
+  }
+  cb(null, false);
+};
+const upload = multer({
+  storage: storage, 
+  limits: {
+  fileSize: 1024 * 1024 *5
+},
+fileFilter: fileFilter
+});
+
+
 require('./mongoConfig');
 
+// Models
 
 const User = mongoose.model(
     'User',
@@ -19,7 +44,16 @@ const User = mongoose.model(
     })
 );
 
-const messages = [
+const Message = mongoose.model(
+  'Messages',
+  new Schema ({
+    caption: { type: String, required: true },
+    user: { type: String, required: true },
+    added: { type: Date, default: Date.now },
+    image: { type: String, required: true }
+  }));
+
+const messages =[
     {
       caption: "Hi there!",
       user: "Armando",
@@ -73,6 +107,7 @@ app.use(function(req, res, next) {
     res.locals.currentUser = req.user;
     next();
 });
+app.use('/uploads', express.static('uploads'));
 
 app.get("/", (req, res) => {
     res.render("index", { user: req.user, messages: messages });
@@ -109,15 +144,30 @@ app.post("/log-in", passport.authenticate("local", {
 })
 );
 
-app.post('/new', function(req, res, next) {
-    const message = {
-        image: req.body.image,
-        caption: req.body.caption,
-        user: req.body.user,
-        added: new Date().toString()
-    };
-    messages.unshift({image: message.image, caption: message.caption, user: message.user, added: message.added});
+app.post('/new', upload.single('image'), function(req, res, next) {
+  const message = new Message({
+    image: req.file.path,
+    caption: req.body.caption,
+    user: req.body.user,
+    added: new Date().toString()
+  }).save(err => {
+    if (err) {
+      return next(err);
+    }
     res.redirect('/');
-  });
+  })
+});
+
+// app.post('/new', upload.single('image'), function(req, res, next) {
+//   console.log(req.file);
+//     const message = {
+//         image: req.file.path,
+//         caption: req.body.caption,
+//         user: req.body.user,
+//         added: new Date().toString()
+//     };
+//     messages.unshift({image: message.image, caption: message.caption, user: message.user, added: message.added});
+//     res.redirect('/');
+//   });
 
 app.listen(3000, () => console.log("app listening on port 3000!"));

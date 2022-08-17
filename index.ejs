@@ -12,7 +12,7 @@
     <a href="/log-out">LOG OUT</a>
     <div>
       <h2>Add to the conversation!</h2>
-      <form action="/new" method="POST">
+      <form action="/new" method="POST" enctype="multipart/form-data">
         <input type="text" name="caption" placeholder="Thoughts?">
         <input type="file" name="image" accept="image/*" placeholder="Add an image">
         <input type="text" name="user" value="<%= user.username %>" readonly>
