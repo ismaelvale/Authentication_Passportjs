@@ -53,19 +53,6 @@ const Message = mongoose.model(
     image: { type: String, required: true }
   }));
 
-const messages =[
-    {
-      caption: "Hi there!",
-      user: "Armando",
-      added: new Date()
-    },
-    {
-      caption: "Hello World!",
-      user: "Charles",
-      added: new Date()
-    }
-  ];
-
 const app = express();
 app.set("views", __dirname);
 app.set("view engine", "ejs");
@@ -109,8 +96,9 @@ app.use(function(req, res, next) {
 });
 app.use('/uploads', express.static('uploads'));
 
-app.get("/", (req, res) => {
-    res.render("index", { user: req.user, messages: messages });
+app.get("/", async (req, res) => {
+    const messages = await Message.find({});
+    res.render("index", { user: req.user, messages });
 });
 app.get("/sign-up", (req, res) => res.render("sign-up-form"));
 app.get('/log-out', (req, res) => {
