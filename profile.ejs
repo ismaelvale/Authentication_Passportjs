@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Profile</title>
+</head>
+<body>
+    <h1><a href="/">Ismagram</a></h1>
+    <% if (user) {%>
+        <h1>WELCOME BACK <%= user.username %></h1>
+        <a href="/log-out">LOG OUT</a> <% } %>
+    <div>
+        <img src="" alt="">
+        <span class="userid">User</span>
+        <span class="real-name">Name</span>
+        <button>edit profile</button>
+        <p><%=Object.keys(messages).length %> posts</p>
+        <p>followers</p>
+        <p>following</p>
+    </div>
+    <div>
+        <p>posts</p>
+        <div class="previous-posts">
+            <%- include('./messages.ejs')%>
+        </div>
+    </div>
+</body>
+</html>

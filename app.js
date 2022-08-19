@@ -40,7 +40,10 @@ const User = mongoose.model(
     'User',
     new Schema({
         username: { type: String, required: true },
-        password: { type: String, required: true }
+        password: { type: String, required: true },
+        fullname: { type: String },
+        followers: { type: Array },
+        following: { type: Array }
     })
 );
 
@@ -95,9 +98,12 @@ app.use(function(req, res, next) {
     next();
 });
 app.use('/uploads', express.static('uploads'));
+app.use('/css', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/css')))
+app.use('/js', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js')))
+app.use('/js', express.static(path.join(__dirname, 'node_modules/jquery/dist')))
 
 app.get("/", async (req, res) => {
-    const messages = await Message.find({});
+    const messages = await Message.find({}).sort({ _id: -1 });
     res.render("index", { user: req.user, messages });
 });
 app.get("/sign-up", (req, res) => res.render("sign-up-form"));
@@ -108,6 +114,10 @@ app.get('/log-out', (req, res) => {
         }
         res.redirect('/');
     });
+});
+app.get('/profile', async (req, res) => {
+  const messages = await Message.find({ user: req.user._doc.username }).sort({ _id: -1 });
+  res.render("profile", {user: req.user, messages});
 });
 
 app.post("/sign-up", (req, res, next) => {

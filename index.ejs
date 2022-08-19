@@ -5,32 +5,57 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Authentication Practice</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
 </head>
 <body>
+  <div class="navbar-brand">
+    <h1><a href="/">Ismagram</a></h1>
+  </div>
   <% if (user) {%>
-    <h1>WELCOME BACK <%= user.username %></h1>
-    <a href="/log-out">LOG OUT</a>
-    <div>
-      <h2>Add to the conversation!</h2>
-      <form action="/new" method="POST" enctype="multipart/form-data">
-        <input type="text" name="caption" placeholder="Thoughts?">
-        <input type="file" name="image" accept="image/*" placeholder="Add an image">
-        <input type="text" name="user" value="<%= user.username %>" readonly>
-        <button type="submit">Submit</button>
-      </form>
+  <div class="container">
+    <div class="card">
+      <h1 class="card-header">WELCOME BACK <%= user.username %></h1>
+      <span class="card-body">
+        <a class="btn btn-outline-primary col" href="/profile">View Profile</a>
+        <button class="btn btn-outline-secondary col" data-toggle="modal" data-target="#new-post">Create New Post</button>
+        <a class="btn btn-outline-danger col" role="button" aria-disabled="true" href="/log-out">LOG OUT</a>
+      </span>
     </div>
-    <%- include('./messages.ejs')%>
+    <div id="new-post" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="new-posttitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Add to the conversation!</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true"></span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form action="/new" method="POST" enctype="multipart/form-data">
+              <input type="text" name="caption" placeholder="Thoughts?">
+              <input type="file" name="image" accept="image/*" placeholder="Add an image">
+              <input type="text" name="user" class="form-control-plaintext" value="<%= user.username %>" readonly>
+              <button type="submit">Submit</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+      <%- include('./messages.ejs')%>
+  </div>
   <% } else { %>
-    <h1>please log in</h1>
+  <div class="mt-5 mx-auto" style="width: 500px">
+    <h2>Please Log In or Sign Up</h2>
     <form action="/log-in" method="POST">
-        <label for="username">Username</label>
-        <input name="username" placeholder="username" type="text" />
-        <label for="password">Password</label>
-        <input name="password" type="password" />
+        <label for="username" class="form-label">Username</label>
+        <input name="username" placeholder="username" type="text" class="form-control"/>
+        <label for="password" class="form-label">Password</label>
+        <input name="password" type="password" class="form-control" />
         <button>Log In</button>
         <p>OR</p>
         <a class="button" href="/sign-up">Sign-Up</a>
     </form>
+  </div>
   <%}%>
 </body>
 </html>
