@@ -23,8 +23,10 @@
       <div id="new-post" class="d-flex p-2">
         <h4 class="">Add to the conversation!</h4>
         <div class="d-flex p-2">
-          <form class="" action="/new" method="POST" enctype="multipart/form-data">
-            <input type="text" name="caption" placeholder="Thoughts?">
+          <form action="/new" method="POST" enctype="multipart/form-data">
+            <label for="caption">Thoughts?</label>
+            <input type="text" name="caption">
+            <label for="image">Add your image</label>
             <input type="file" name="image" accept="image/*" placeholder="Add an image">
             <input type="text" name="user" class="form-control-plaintext" value="<%= user.username %>" readonly>
             <button type="submit" class="btn btn-light">Submit New Post</button>
@@ -41,7 +43,7 @@
         <input name="username" placeholder="username" type="text" class="form-control"/>
         <label for="password" class="form-label">Password</label>
         <input name="password" type="password" class="form-control" />
-        <button>Log In</button>
+        <button class="mt-2">Log In</button>
         <p>OR</p>
         <a class="button" href="/sign-up">Sign-Up</a>
       </form>
