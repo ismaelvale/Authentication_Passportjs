@@ -24,10 +24,10 @@
         <h4 class="">Add to the conversation!</h4>
         <div class="d-flex p-2">
           <form action="/new" method="POST" enctype="multipart/form-data">
-            <label for="caption">Thoughts?</label>
-            <input type="text" name="caption">
-            <label for="image">Add your image</label>
-            <input type="file" name="image" accept="image/*" placeholder="Add an image">
+            <label class="form-label" for="caption">Thoughts?</label>
+            <input class="form-control" type="text" name="caption">
+            <label class="form-label" for="image">Add your image</label>
+            <input class="form-control" type="file" name="image" accept="image/*" placeholder="Add an image">
             <input type="text" name="user" class="form-control-plaintext" value="<%= user.username %>" readonly>
             <button type="submit" class="btn btn-light">Submit New Post</button>
           </form>
@@ -40,12 +40,11 @@
       <h2>Please Log In or Sign Up</h2>
       <form action="/log-in" method="POST">
         <label for="username" class="form-label">Username</label>
-        <input name="username" placeholder="username" type="text" class="form-control"/>
+        <input class="form-control" name="username" placeholder="username" type="text" />
         <label for="password" class="form-label">Password</label>
-        <input name="password" type="password" class="form-control" />
-        <button class="mt-2">Log In</button>
-        <p>OR</p>
-        <a class="button" href="/sign-up">Sign-Up</a>
+        <input class="form-control" name="password" type="password" />
+        <button class="btn mx-auto my-2" style="width: 500px">Log In</button>
+        <a class="btn mx-auto" style="width: 500px" href="/sign-up">Sign-Up</a>
       </form>
   </div>
   <%}%>

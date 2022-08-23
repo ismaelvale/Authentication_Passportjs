@@ -117,7 +117,7 @@ app.get('/log-out', (req, res) => {
 });
 app.get('/profile', async (req, res) => {
   const messages = await Message.find({ user: req.user._doc.username }).sort({ _id: -1 });
-  res.render("profile", {user: req.user, messages});
+  res.render("myprofile", {user: req.user, messages});
 });
 
 app.post("/sign-up", (req, res, next) => {
