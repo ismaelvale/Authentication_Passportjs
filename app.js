@@ -6,6 +6,8 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const User = require('./models/users');
+const Message = require('./models/messages');
 const bcrypt = require("bcryptjs");
 const multer = require('multer');
 const storage = multer.diskStorage({
@@ -33,28 +35,6 @@ fileFilter: fileFilter
 
 
 require('./mongoConfig');
-
-// Models
-
-const User = mongoose.model(
-    'User',
-    new Schema({
-        username: { type: String, required: true },
-        password: { type: String, required: true },
-        fullname: { type: String },
-        followers: { type: Array },
-        following: { type: Array }
-    })
-);
-
-const Message = mongoose.model(
-  'Messages',
-  new Schema ({
-    caption: { type: String, required: true },
-    user: { type: String, required: true },
-    added: { type: Date, default: Date.now },
-    image: { type: String, required: true }
-  }));
 
 const app = express();
 app.set("views", __dirname);
@@ -120,14 +100,16 @@ app.get('/profile', async (req, res) => {
   res.render("myprofile", {user: req.user, messages});
 });
 
-app.post("/sign-up", (req, res, next) => {
+app.post("/sign-up", upload.single('profilePhoto'), (req, res, next) => {
     bcrypt.hash(req.body.password, 10, (err, hashedPassword) => {
         if (err) {
             return(err);
         }
         const user = new User({
             username: req.body.username,
-            password: hashedPassword
+            password: hashedPassword,
+            profilePhoto: req.file.path,
+            fullName: req.body.fullName,
         }).save(err => {
             if (err) {
                 return next(err);
@@ -155,17 +137,5 @@ app.post('/new', upload.single('image'), function(req, res, next) {
     res.redirect('/');
   })
 });
-
-// app.post('/new', upload.single('image'), function(req, res, next) {
-//   console.log(req.file);
-//     const message = {
-//         image: req.file.path,
-//         caption: req.body.caption,
-//         user: req.body.user,
-//         added: new Date().toString()
-//     };
-//     messages.unshift({image: message.image, caption: message.caption, user: message.user, added: message.added});
-//     res.redirect('/');
-//   });
 
 app.listen(3000, () => console.log("app listening on port 3000!"));

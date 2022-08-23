@@ -8,12 +8,16 @@
 </head>
 <body>
     <h1>Sign Up</h1>
-    <form action="" method="POST">
+    <form action="/sign-up" method="POST" enctype="multipart/form-data">
         <label for="username">Username</label>
         <input type="text" name="username" placeholder="username"/>
         <label for="password">Password</label>
         <input type="password" name="password"/>
-        <button>Sign Up</button>
+        <label for="ProfilePhoto">Profile Photo</label>
+        <input class="form-control" type="file" name="profilePhoto" accept="image/*" placeholder="Add an image">
+        <label for="fullName" class="form-label">Display Name</label>
+        <input type="text" class="form-control" name="fullName">
+        <button class="btn" type="submit">Sign Up</button>
     </form>
 </body>
 </html>
