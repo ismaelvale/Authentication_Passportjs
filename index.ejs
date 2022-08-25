@@ -20,15 +20,24 @@
           <a class="btn btn-outline-danger col" role="button" aria-disabled="true" href="/log-out">LOG OUT</a>
         </span>
       </div>
-      <div id="new-post" class="d-flex p-2">
-        <h4 class="">Add to the conversation!</h4>
-        <div class="d-flex p-2">
+      <div id="new-post" class="container">
+        <h4 class="text-center">Add to the conversation!</h4>
+        <div class="container mx-auto" style="width: 500px;">
           <form action="/new" method="POST" enctype="multipart/form-data">
             <label class="form-label" for="caption">Thoughts?</label>
             <input class="form-control" type="text" name="caption">
             <label class="form-label" for="image">Add your image</label>
             <input class="form-control" type="file" name="image" accept="image/*" placeholder="Add an image">
-            <input type="text" name="user" class="form-control-plaintext" value="<%= user.username %>" readonly>
+            <div class="container text-center">
+              <div class="row">
+                <div class="col-sm-4 my-2">
+                  <label for="form-label">Posting as:</label>
+                </div>
+                <div class="col-sm-8">
+                  <input type="text" name="user" class="form-control-plaintext" value="<%= user.username %>" readonly>
+                </div>
+              </div>
+            </div>
             <button type="submit" class="btn btn-light">Submit New Post</button>
           </form>
         </div>

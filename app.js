@@ -138,4 +138,10 @@ app.post('/new', upload.single('image'), function(req, res, next) {
   })
 });
 
+app.post('/updatePhoto', upload.single('profilePhoto'), function(req, res, next) {
+  User.findByIdAndUpdate(req.params.id, {profilePhoto: req.file.path}, function () {
+    res.redirect('/profile');
+  })
+});
+
 app.listen(3000, () => console.log("app listening on port 3000!"));
