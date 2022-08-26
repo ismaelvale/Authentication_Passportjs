@@ -1,10 +1,7 @@
-<div class="feed mx-auto my-2" style="width: 30rem;">
-    <h5>Recent Posts</h5>
-    <% messages.forEach(function(message) { -%>
-    <div class="post card my-2 mx-auto" style="width: auto">
-        <p class="card-title">Posted by <%= message.user %> </p>
-        <img class="card-img" src="<%= message.image %>">
-        <div class="content card-body card-text"> <%= message.caption %> </div>
-        <p class="card-footer"> <%= message.added %> </p>
-    </div> <% }) %>
-</div>
+<% messages.forEach(function(message) { -%>
+<div class="post card my-2 mx-auto" style="width: auto">
+    <p class="card-title">Posted by <%= message.user %> </p>
+    <img class="card-img" src="<%= message.image %>">
+    <div class="content card-body card-text"> <%= message.caption %> </div>
+    <p class="card-footer"> <%= message.added %> </p>
+</div> <% }) %>

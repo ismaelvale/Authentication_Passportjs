@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { collection } = require("./models/users");
 
 const mongoDB = process.env.mongoDB;
 

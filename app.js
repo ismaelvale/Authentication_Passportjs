@@ -1,4 +1,5 @@
 require('dotenv').config();
+const {faker} = require('@faker-js/faker');
 const express = require('express');
 const path = require('path');
 const session = require("express-session");
@@ -8,6 +9,8 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const User = require('./models/users');
 const Message = require('./models/messages');
+const users_controller = require('./users_controller');
+const { body, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 const multer = require('multer');
 const storage = multer.diskStorage({
@@ -100,6 +103,19 @@ app.get('/profile', async (req, res) => {
   res.render("myprofile", {user: req.user, messages});
 });
 
+// app.get('/users/:username', async (req, res, next) => {
+//   const user = await User.find({ user: req.params.id });
+//   const messages = await Messages.find({ user: req.params.id }).sort({ _id: -1 });
+//   if (err) { return next(err); }
+//     if (user==null) { // No results.
+//       var err = new Error('User not found');
+//       err.status = 404;
+//       return next(err);
+//     }
+//     //Successful, so render
+//     res.render('users', {  user: user[0]._doc, messages: messages });
+//   });
+
 app.post("/sign-up", upload.single('profilePhoto'), (req, res, next) => {
     bcrypt.hash(req.body.password, 10, (err, hashedPassword) => {
         if (err) {
@@ -118,11 +134,10 @@ app.post("/sign-up", upload.single('profilePhoto'), (req, res, next) => {
         });
     });
 });
-app.post("/log-in", passport.authenticate("local", {
-    successRedirect: '/',
-    failureRedirect: '/'
-})
-);
+app.post("/log-in", passport.authenticate('local', { failureRedirect: '/'}),
+function(req, res) {
+  res.redirect('/');
+});
 
 app.post('/new', upload.single('image'), function(req, res, next) {
   const message = new Message({
