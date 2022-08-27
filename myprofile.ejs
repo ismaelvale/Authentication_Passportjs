@@ -42,7 +42,16 @@
     </div>
         <p class="text-center fw-semibold">Previous Posts</p>
         <div class="container text-center">
-            <%- include('./messages.ejs')%>
+            <div class="container text-center">
+                <div class="row mx-auto">
+                    <% messages.forEach(function(message) { -%>
+                    <div class="col" style="width: 161px; height: 161px;">
+                        <a href="/message-focus">
+                            <img class="img-fluid" src="<%= message.image %>">
+                        </a>
+                    </div> <% }) %>
+                </div>
+            </div>
         </div>
     </div> 
 </body>
