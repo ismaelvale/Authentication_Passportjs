@@ -10,28 +10,25 @@ async function seedDB() {
 
     const client = new MongoClient(uri, { useUnifiedTopology: true, useNewUrlParser: true });
 
-    let hashedPassword = bcrypt.hashSync('123', 10);
         
     try {
         await client.connect();
         console.log("Connected correctly to server");
-        const collection = client.db("test").collection("users");
-        let seedUsers = [];
+        const collection = client.db("test").collection("messages");
+        let seedMessages = [];
 
-        for (let i = 0; i < 20; i++) {
+        for (let i = 0; i < 5; i++) {
             
-            let User = {
-                username: faker.internet.userName(),
-                password: hashedPassword,
-                profilePhoto: faker.image.avatar(),
-                fullName: faker.name.firstName(),
-                followers: [],
-                following: []
+            let message = {
+                caption: faker.lorem.lines(1),
+                user: 'Tristin80',
+                added: { type: Date, default: Date.now },
+                image: faker.image.image()
             }
-            seedUsers.push(User);
+            seedMessages.push(message);
             
         }
-        await collection.insertMany(seedUsers);
+        await collection.insertMany(seedMessages);
         console.log("Database seeded! :)");
         client.close();
     }
@@ -40,4 +37,4 @@ async function seedDB() {
     }
 };
 
-// seedDB();
+seedDB();

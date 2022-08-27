@@ -86,7 +86,7 @@ app.use('/js', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/
 app.use('/js', express.static(path.join(__dirname, 'node_modules/jquery/dist')))
 
 app.get("/", async (req, res) => {
-    const messages = await Message.find({}).sort({ _id: -1 });
+    const messages = await Message.find({});
     res.render("index", { user: req.user, messages });
 });
 app.get("/sign-up", (req, res) => res.render("sign-up-form"));
@@ -103,18 +103,18 @@ app.get('/profile', async (req, res) => {
   res.render("myprofile", {user: req.user, messages});
 });
 
-// app.get('/users/:username', async (req, res, next) => {
-//   const user = await User.find({ user: req.params.id });
-//   const messages = await Messages.find({ user: req.params.id }).sort({ _id: -1 });
-//   if (err) { return next(err); }
-//     if (user==null) { // No results.
-//       var err = new Error('User not found');
-//       err.status = 404;
-//       return next(err);
-//     }
-//     //Successful, so render
-//     res.render('users', {  user: user[0]._doc, messages: messages });
-//   });
+app.get('/users/:id', async (req, res, next) => {
+  const user = await User.find({ user: req.params.id });
+  const messages = await Message.find({ user: req.params.id }).sort({ _id: -1 });
+  if (err) { return next(err); }
+    if (user==null) { // No results.
+      var err = new Error('User not found');
+      err.status = 404;
+      return next(err);
+    }
+    //Successful, so render
+    res.render('users', {  user: user[0]._doc, messages: messages });
+  });
 
 app.post("/sign-up", upload.single('profilePhoto'), (req, res, next) => {
     bcrypt.hash(req.body.password, 10, (err, hashedPassword) => {
