@@ -9,13 +9,9 @@
 </head>
 <body>
     <h1><a href="/">Ismagram</a></h1>
-    <% if (user) {%>
-        <h1>WELCOME BACK <%= user.username %></h1>
-        <a href="/log-out">LOG OUT</a> <% } %>   
-    <div class="container">
-        <% if (user.profilePhoto) { %>
+        <% if (user[0]._doc.profilePhoto) { %>
             <div class="d-grid gap-2 col-6 mx-auto">
-                <img src="<%= user.profilePhoto %>" class="rounded-circle mx-auto" style="width: 200px; height: 220px;">
+                <img src="<%= user[0]._doc.profilePhoto %>" class="rounded-circle mx-auto" style="width: 200px; height: 220px;">
             </div>
         <% } else { %>
             <form action="/updatePhoto" method="POST" enctype="multipart/form-data">
@@ -30,8 +26,8 @@
                 </div> 
             </form> <% } %>
         <div class="container">
-            <h4 class="text-center"><%= user.fullName %></h4>
-            <p class="text-center"><%= user.username %></p>
+            <h4 class="text-center"><%= user[0]._doc.fullName %></h4>
+            <p class="text-center"><%= user[0]._doc.username %></p>
         </div>
     </div>
         <!-- <button class="btn">edit profile</button> -->
@@ -40,10 +36,17 @@
         <p class="fw-semibold align-middle my-0">followers</p>
         <p class="fw-semibold align-middle my-0">following</p>
     </div>
-        <p class="text-center fw-semibold">Previous Posts</p>
-        <div class="container text-center">
-            <%- include('./messages.ejs')%>
+    <p class="text-center fw-semibold">Previous Posts</p>
+    <div class="container text-center">
+        <div class="row mx-auto">
+            <% messages.forEach(function(message) { -%>
+            <div class="col" style="width: 161px; height: 161px;">
+                <a href="/message-focus">
+                    <img class="img-fluid" src="<%= message.image %>">
+                </a>
+            </div> <% }) %>
         </div>
+    </div>
     </div> 
 </body>
 </html>

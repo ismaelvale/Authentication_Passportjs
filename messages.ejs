@@ -1,11 +1,19 @@
 <% messages.forEach(function(message) { -%>
 <div class="post card my-2 mx-auto" style="width: auto">
-    <a href="/users/<%=message.user%>">
+   <% if (user.username === message.user) { %>
+    <a href="/profile">
         <div class="d-grid gap-2 col-6 mx-auto">
             <img src="<%= user.profilePhoto %>" class="rounded-circle mx-auto" style="width: 30px; height: 33px;">
         </div>
         <p class="card-title">Posted by <%= message.user %> </p>
     </a>
+    <% } else { %>
+    <a href="/users/<%=message.user%>">
+        <div class="d-grid gap-2 col-6 mx-auto">
+            <img src="<%= user.profilePhoto %>" class="rounded-circle mx-auto" style="width: 30px; height: 33px;">
+        </div>
+        <p class="card-title">Posted by <%= message.user %> </p>
+    </a> <% } %>
     <img class="card-img" src="<%= message.image %>">
     <div class="content card-body card-text"> <%= message.caption %> </div>
     <p class="card-footer"> <%= message.added %> </p>

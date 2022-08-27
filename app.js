@@ -86,7 +86,7 @@ app.use('/js', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/
 app.use('/js', express.static(path.join(__dirname, 'node_modules/jquery/dist')))
 
 app.get("/", async (req, res) => {
-    const messages = await Message.find({});
+    const messages = await Message.find({}).sort({_id: -1});
     res.render("index", { user: req.user, messages });
 });
 app.get("/sign-up", (req, res) => res.render("sign-up-form"));
@@ -104,7 +104,7 @@ app.get('/profile', async (req, res) => {
 });
 
 app.get('/users/:id', async (req, res, next) => {
-  const user = await User.find({ user: req.params.id });
+  const user = await User.find({ username: req.params.id });
   const messages = await Message.find({ user: req.params.id }).sort({ _id: -1 });
   if (err) { return next(err); }
     if (user==null) { // No results.
@@ -113,7 +113,7 @@ app.get('/users/:id', async (req, res, next) => {
       return next(err);
     }
     //Successful, so render
-    res.render('users', {  user: user[0]._doc, messages: messages });
+    res.render('users', {  user: user, messages: messages });
   });
 
 app.post("/sign-up", upload.single('profilePhoto'), (req, res, next) => {
