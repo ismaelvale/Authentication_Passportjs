@@ -159,31 +159,41 @@ app.post('/new', upload.single('image'), function(req, res, next) {
 //   })
 // });
 
-app.post('/follow/:id', async(req, res, next) => {
+app.post('/follow/:id/:follower', async(req, res, next) => {
   const currentUser = req.user;
-  const user = await User.find({username: req.params.id});
+  const user = await User.findOne({username: req.params.id});
   currentUser.following.push(req.params.id);
   currentUser.save(err => {
     if(err) {
       return next(err);
-    }
-    console.log(currentUser, user);
-    res.redirect(`/users/${req.params.id}`);
-});
+    }});
+  user.followers.push(req.params.follower);
+  user.save(err => {
+    if(err) {
+    return next(err);
+  }});
+  console.log(currentUser, user);
+  res.redirect(`/users/${req.params.id}`);
 });
 
-app.post('/unfollow/:id', async(req, res, next) => {
+app.post('/unfollow/:id/:follower', async(req, res, next) => {
   const currentUser = req.user;
-  const user = await User.find({username: req.params.id});
-  const newFollow = currentUser.following.filter(users => users !== req.params.id);
-  currentUser.following = newFollow;
+  const user = await User.findOne({username: req.params.id});
+  const newFollowing = currentUser.following.filter(users => users !== req.params.id);
+  const newFollowers = user.followers.filter(users => users !== req.params.follower);
+  currentUser.following = newFollowing;
   currentUser.save(err => {
     if(err) {
       return next(err);
     }
-    console.log(currentUser, user);
-    res.redirect(`/users/${req.params.id}`);
-});
+  });
+  user.followers = newFollowers;
+  user.save(err => {
+    if(err) {
+      return next(err);
+    }
+  });
+res.redirect(`/users/${req.params.id}`);
 });
 
 app.listen(3000, () => console.log("app listening on port 3000!"));
