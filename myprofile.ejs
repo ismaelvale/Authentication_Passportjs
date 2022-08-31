@@ -37,8 +37,8 @@
         <!-- <button class="btn">edit profile</button> -->
     <div class="d-flex justify-content-around border align-items-center">
         <p class="fw-semibold align-middle my-0"><%=Object.keys(messages).length %> posts</p>
-        <p class="fw-semibold align-middle my-0">followers</p>
-        <p class="fw-semibold align-middle my-0">following</p>
+        <p class="fw-semibold align-middle my-0"><%= user.followers.length %> followers</p>
+        <p class="fw-semibold align-middle my-0"><%= user.following.length %> following</p>
     </div>
         <p class="text-center fw-semibold">Previous Posts</p>
         <div class="container text-center">

@@ -153,10 +153,37 @@ app.post('/new', upload.single('image'), function(req, res, next) {
   })
 });
 
-app.post('/updatePhoto', upload.single('profilePhoto'), function(req, res, next) {
-  User.findByIdAndUpdate(req.params.id, {profilePhoto: req.file.path}, function () {
-    res.redirect('/profile');
-  })
+// app.post('/updatePhoto', upload.single('profilePhoto'), function(req, res, next) {
+//   User.findByIdAndUpdate(req.params.id, {profilePhoto: req.file.path}, function () {
+//     res.redirect('/profile');
+//   })
+// });
+
+app.post('/follow/:id', async(req, res, next) => {
+  const currentUser = req.user;
+  const user = await User.find({username: req.params.id});
+  currentUser.following.push(req.params.id);
+  currentUser.save(err => {
+    if(err) {
+      return next(err);
+    }
+    console.log(currentUser, user);
+    res.redirect(`/users/${req.params.id}`);
+});
+});
+
+app.post('/unfollow/:id', async(req, res, next) => {
+  const currentUser = req.user;
+  const user = await User.find({username: req.params.id});
+  const newFollow = currentUser.following.filter(users => users !== req.params.id);
+  currentUser.following = newFollow;
+  currentUser.save(err => {
+    if(err) {
+      return next(err);
+    }
+    console.log(currentUser, user);
+    res.redirect(`/users/${req.params.id}`);
+});
 });
 
 app.listen(3000, () => console.log("app listening on port 3000!"));
