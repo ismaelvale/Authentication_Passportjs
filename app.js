@@ -1,5 +1,6 @@
 require('dotenv').config();
 const {faker} = require('@faker-js/faker');
+const { createPopper } = require('@popperjs/core');
 const express = require('express');
 const path = require('path');
 const session = require("express-session");

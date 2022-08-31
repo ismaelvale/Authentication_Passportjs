@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Profile</title>
     <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js" integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK" crossorigin="anonymous"></script>
 </head>
 <body>
     <h1><a href="/">Ismagram</a></h1>
@@ -37,7 +39,10 @@
         <!-- <button class="btn">edit profile</button> -->
     <div class="d-flex justify-content-around border align-items-center">
         <p class="fw-semibold align-middle my-0"><%=Object.keys(messages).length %> posts</p>
-        <p class="fw-semibold align-middle my-0"><%= user.followers.length %> followers</p>
+        <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            <p class="fw-semibold align-middle my-0"><%= user.followers.length %> followers</p>   
+        </button>
+        <%- include('./followers.ejs')%>
         <p class="fw-semibold align-middle my-0"><%= user.following.length %> following</p>
     </div>
         <p class="text-center fw-semibold">Previous Posts</p>
