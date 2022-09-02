@@ -1,0 +1,32 @@
+<div class="modal fade" id="newPost" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="newPostpLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">New Post</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form action="/new" method="POST" enctype="multipart/form-data">
+            <label class="form-label" for="caption">Thoughts?</label>
+            <input class="form-control" type="text" name="caption">
+            <label class="form-label" for="image">Add your image</label>
+            <input class="form-control" type="file" name="image" accept="image/*" placeholder="Add an image">
+            <div class="container text-center">
+                <div class="row">
+                <div class="col-sm-4 my-2">
+                    <label for="form-label">Posting as:</label>
+                </div>
+                <div class="col-sm-8">
+                    <input type="text" name="user" class="form-control-plaintext" value="<%= user.username %>" readonly>
+                </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-light">Submit New Post</button>
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>

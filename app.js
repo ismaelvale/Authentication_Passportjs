@@ -100,8 +100,9 @@ app.get('/log-out', (req, res) => {
     });
 });
 app.get('/profile', async (req, res) => {
+  const user = await User.findOne({ username: req.user.username})
   const messages = await Message.find({ user: req.user._doc.username }).sort({ _id: -1 });
-  res.render("myprofile", {user: req.user, messages});
+  res.render("myprofile", {user: user, messages});
 });
 
 app.get('/users/:id', async (req, res, next) => {
