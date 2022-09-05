@@ -106,7 +106,7 @@ app.get('/profile', async (req, res) => {
 });
 
 app.get('/users/:id', async (req, res, next) => {
-  const user = await User.find({ username: req.params.id });
+  const user = await User.findOne({ username: req.params.id });
   const messages = await Message.find({ user: req.params.id }).sort({ _id: -1 });
   if (err) { return next(err); }
     if (user==null) { // No results.
@@ -145,7 +145,7 @@ app.post('/new', upload.single('image'), function(req, res, next) {
   const message = new Message({
     image: req.file.path,
     caption: req.body.caption,
-    user: req.body.user,
+    user: req.body.user._id,
     added: new Date().toString()
   }).save(err => {
     if (err) {
@@ -197,5 +197,20 @@ app.post('/unfollow/:id/:follower', async(req, res, next) => {
   });
 res.redirect(`/users/${req.params.id}`);
 });
+
+app.post('/like/:id/:liker', async(req, res, next) => {
+  // const liked = await Message.findById({ _id : req.params.id });
+  const liker = await User.findOne({ username: req.params.liker});
+  Message.updateOne({_id : req.params.id }, { $inc: { likes : 1 }}).exec(err => {
+    if(err) {
+      return next(err);
+    }
+  });
+  res.redirect('/');
+})
+
+// app.post('/comment/:id/:commenter', async(req, res, next) => {
+
+// });
 
 app.listen(3000, () => console.log("app listening on port 3000!"));

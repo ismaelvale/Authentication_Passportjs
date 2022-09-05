@@ -7,7 +7,7 @@ const MessageSchema = new Schema({
     added: { type: Date, default: Date.now },
     image: { type: String, required: true },
     comments: [{body:"string", by: mongoose.Schema.Types.ObjectId}],
-    likes: [{body:"string", by: mongoose.Schema.Types.ObjectId}]
+    likes: [{ type: Number }]
 });
 
 MessageSchema.virtual('url').get(function () {
