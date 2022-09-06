@@ -87,8 +87,8 @@ app.use('/js', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/
 app.use('/js', express.static(path.join(__dirname, 'node_modules/jquery/dist')))
 
 app.get("/", async (req, res) => {
-    const messages = await Message.find({}).sort({_id: -1});
-    res.render("index", { user: req.user, messages });
+  const messages = await Message.find({}).sort({_id: -1});
+  res.render("index", { user: req.user, messages });
 });
 app.get("/sign-up", (req, res) => res.render("sign-up-form"));
 app.get('/log-out', (req, res) => {
@@ -102,7 +102,7 @@ app.get('/log-out', (req, res) => {
 app.get('/profile', async (req, res) => {
   const user = await User.findOne({ username: req.user.username})
   const messages = await Message.find({ user: req.user._doc.username }).sort({ _id: -1 });
-  res.render("myprofile", {user: user, messages});
+  res.render("myprofile", {user, messages});
 });
 
 app.get('/users/:id', async (req, res, next) => {
