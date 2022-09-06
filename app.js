@@ -207,10 +207,15 @@ app.post('/like/:id/:liker', async(req, res, next) => {
     }
   });
   res.redirect('/');
-})
+});
 
-// app.post('/comment/:id/:commenter', async(req, res, next) => {
-
-// });
+app.post('/comment/:id/:commenter', async(req, res, next) => {
+await Message.updateOne({_id : req.params.id}, {comments: {body: req.body.newComment, by: req.params.commenter.toString()} }).exec(err => {
+  if(err){
+    return next(err);
+  }
+});
+res.redirect('/');
+});
 
 app.listen(3000, () => console.log("app listening on port 3000!"));
