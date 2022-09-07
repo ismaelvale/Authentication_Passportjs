@@ -1,21 +1,21 @@
 <% messages.forEach(function(message) { -%>
 <div class="post card my-2 mx-auto" style="width: auto">
-   <% if (user.username === message.user) { %>
+    <% if (user.username === message.user.username) { %>
     <a href="/profile">
-        <div class="d-flex mx-2 p-2">
+        <div class="d-flex mx-2 mt-2 p-1">
             <img src="<%= user.profilePhoto %>" class="rounded-circle" style="width: 30px; height: 33px;">
-            <p class="card-title m-2">Posted by <%= message.user %> </p>
+            <p class="card-title m-2">Posted by <%= message.user.username %> </p>
         </div>
     </a>
     <% } else { %>
-    <a href="/users/<%=message.user%>">
-        <div class="d-flex mx-2 p-2">
-            <img src="<%= user.profilePhoto %>" class="rounded-circle" style="width: 30px; height: 33px;">
-            <p class="card-title">Posted by <%= message.user %> </p>
+    <a href="/users/<%=message.user._id%>">
+        <div class="d-flex mx-2 mt-2 p-1">
+            <img src="<%= message.user.profilePhoto %>" class="rounded-circle" style="width: 30px; height: 33px;">
+            <p class="card-title m-2">Posted by <%= message.user.username %> </p>
         </div>
     </a> <% } %>
     <img class="card-img" src="<%= message.image %>">
-    <div class="content card-body card-text"> <%= message.caption %> </div>
+    <div class="content card-body card-text ps-2"> <%= message.caption %> </div>
     <div class="d-flex card-subtitle mb-2">
         <form action="/like/<%= message._id %>/<%= user.username %>" method="POST">
             <button type="submit" class="border-0 btn btn-outline-dark px-2">
@@ -33,7 +33,6 @@
     <div class="collapse" id="newComment">
         <form action="/comment/<%= message._id %>/<%= user._id %>" method="POST">
             <input type="text" class="form-control" placeholder="Leave a comment here" id="newComment" name="newComment"></input>
-            <label for="newComment">Comment</label>
             <button type="submit" class="btn btn-outline-dark">Add Comment</button>
         </form>
     </div>
@@ -42,15 +41,24 @@
     <% } else if (message.likes == 1) { %>
     <div class="content card-subtitle mx-2"><%= message.likes %> like</div>
     <% } %>
+    <% if(message.comments.length >= 1) { %>
     <p class="m-2">
         <a data-bs-toggle="collapse" href="#comments" role="button" aria-expanded="false" aria-controls="collapseExample">
           View Comments
         </a>
     </p>
     <div class="collapse" id="comments">
+        <% message.comments.forEach(comment => { %>
         <div class="card card-body">
-        </div>
+            <img src="<%= comment.by.profilePhoto %>" class="rounded-circle" style="width: 30px; height: 33px;">
+            <%= comment.by.username %>: <%= comment.body %>
+        </div> <% }) %>
     </div>
+    <% } else { %>
+    <p class="m-2">
+        No Comments Yet
+    </p>
+    <% } %>
     <!-- <div class="content card-body card-text">
         comment
     </div> -->

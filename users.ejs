@@ -20,11 +20,11 @@
             <h4 class="text-center"><%= user.fullName %></h4>
             <p class="text-center"><%= user.username %></p>
             <% if (currentUser.following.includes(user.username)) { %>
-                <form action="/unfollow/<%= user.username %>/<%=currentUser.username%>" method="post" class="row justify-content-center">
+                <form action="/unfollow/<%= user._id %>/<%=currentUser.username%>" method="post" class="row justify-content-center">
                     <button type="submit" class="btn btn-outline-danger col-6">Unfollow</button>
                 </form>
                 <% } else { %>
-            <form action="/follow/<%= user.username %>/<%=currentUser.username%>" method="post" class="row justify-content-center">
+            <form action="/follow/<%= user._id %>/<%=currentUser.username%>" method="post" class="row justify-content-center">
                 <button type="submit" class="btn btn-outline-success col-6">Follow</button>
             </form> <% } %>
         </div>

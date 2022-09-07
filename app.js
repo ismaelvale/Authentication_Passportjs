@@ -87,8 +87,8 @@ app.use('/js', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/
 app.use('/js', express.static(path.join(__dirname, 'node_modules/jquery/dist')))
 
 app.get("/", async (req, res) => {
-  const messages = await Message.find({}).sort({_id: -1});
-  res.render("index", { user: req.user, messages });
+  const messages = await Message.find({}).populate({ path: 'user', strictPopulate: false }).populate({ path: 'comments', populate: 'by', strictPopulate: false }).sort({comments: -1});
+  res.render("index", { user: req.user, messages});
 });
 app.get("/sign-up", (req, res) => res.render("sign-up-form"));
 app.get('/log-out', (req, res) => {
@@ -100,13 +100,13 @@ app.get('/log-out', (req, res) => {
     });
 });
 app.get('/profile', async (req, res) => {
-  const user = await User.findOne({ username: req.user.username})
-  const messages = await Message.find({ user: req.user._doc.username }).sort({ _id: -1 });
+  const user = await User.findOne({ _id: req.user.id})
+  const messages = await Message.find({ user: user._id}).sort({ _id: -1 });
   res.render("myprofile", {user, messages});
 });
 
 app.get('/users/:id', async (req, res, next) => {
-  const user = await User.findOne({ username: req.params.id });
+  const user = await User.findOne({ _id: req.params.id });
   const messages = await Message.find({ user: req.params.id }).sort({ _id: -1 });
   if (err) { return next(err); }
     if (user==null) { // No results.
@@ -141,11 +141,11 @@ function(req, res) {
   res.redirect('/');
 });
 
-app.post('/new', upload.single('image'), function(req, res, next) {
+app.post('/new/:id', upload.single('image'), function(req, res, next) {
   const message = new Message({
     image: req.file.path,
     caption: req.body.caption,
-    user: req.body.user._id,
+    user: req.params.id,
     added: new Date().toString()
   }).save(err => {
     if (err) {
@@ -163,8 +163,8 @@ app.post('/new', upload.single('image'), function(req, res, next) {
 
 app.post('/follow/:id/:follower', async(req, res, next) => {
   const currentUser = req.user;
-  const user = await User.findOne({username: req.params.id});
-  currentUser.following.push(req.params.id);
+  const user = await User.findOne({_id: req.params.id});
+  currentUser.following.push(user.username);
   currentUser.save(err => {
     if(err) {
       return next(err);
@@ -180,8 +180,8 @@ app.post('/follow/:id/:follower', async(req, res, next) => {
 
 app.post('/unfollow/:id/:follower', async(req, res, next) => {
   const currentUser = req.user;
-  const user = await User.findOne({username: req.params.id});
-  const newFollowing = currentUser.following.filter(users => users !== req.params.id);
+  const user = await User.findOne({_id: req.params.id});
+  const newFollowing = currentUser.following.filter(users => users !== user.username);
   const newFollowers = user.followers.filter(users => users !== req.params.follower);
   currentUser.following = newFollowing;
   currentUser.save(err => {
@@ -210,7 +210,9 @@ app.post('/like/:id/:liker', async(req, res, next) => {
 });
 
 app.post('/comment/:id/:commenter', async(req, res, next) => {
-await Message.updateOne({_id : req.params.id}, {comments: {body: req.body.newComment, by: req.params.commenter.toString()} }).exec(err => {
+const msg = await Message.findById({_id : req.params.id});
+msg.comments.push({body: req.body.newComment, by: req.params.commenter.toString()});
+Message.updateOne({_id : req.params.id}, {comments: msg.comments }).exec(err => {
   if(err){
     return next(err);
   }
