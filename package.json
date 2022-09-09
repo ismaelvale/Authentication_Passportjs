@@ -4,7 +4,9 @@
   "description": "pp",
   "main": "app.js",
   "scripts": {
-    "dev": "npm start"
+    "start": "node ./bin/www",
+    "devstart": "nodemon ./bin/www",
+    "serverstart": "DEBUG=IG_Clone:* npm run devstart"
   },
   "author": "",
   "license": "ISC",
