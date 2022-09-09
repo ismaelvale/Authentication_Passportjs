@@ -219,3 +219,5 @@ Message.updateOne({_id : req.params.id}, {comments: msg.comments }).exec(err => 
 });
 res.redirect('/');
 });
+
+app.listen(3000, () => console.log("app listening on port 3000!"));
