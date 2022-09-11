@@ -1,6 +1,9 @@
 {
   "name": "IG_Clone",
   "version": "1.0.0",
+  "engines": {
+    "node": "16.14.0"
+  },
   "description": "pp",
   "main": "app.js",
   "scripts": {
@@ -34,8 +37,5 @@
   "devDependencies": {
     "@faker-js/faker": "^7.4.0",
     "nodemon": "^2.0.19"
-  },
-  "engines": {
-    "node": "16.14.0"
   }
 }
