@@ -7,7 +7,7 @@
   "description": "pp",
   "main": "app.js",
   "scripts": {
-    "start": "node bin/www",
+    "start": "node /Users/ismaelvalentin/IG_Clone/bin/www",
     "devstart": "nodemon bin/www",
     "serverstart": "DEBUG=IG_Clone:* npm run devstart"
   },
