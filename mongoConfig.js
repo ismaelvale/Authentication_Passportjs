@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const { collection } = require("./models/users");
 
-const mongoDB = process.env.mongoDB;
+const mongoDB = process.env.MONGO_DB;
 
 mongoose.connect(mongoDB, { useUnifiedTopology: true, useNewUrlParser: true });
 const db = mongoose.connection;
